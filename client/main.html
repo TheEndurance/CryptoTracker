@@ -1,25 +1,35 @@
 <head>
-  <title>LearningMeteor</title>
+    <title>Shameless Blockfolio clone</title>
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
-
-  {{> hello}}
-  {{> info}}
+    <h1>Blockfolio clone</h1>
+    {{> selectPortfolio}}
+    {{> coinList}}
+    {{> coinForm}}
 </body>
 
-<template name="hello">
-  <button>Click Me</button>
-  <p>You've pressed the button {{counter}} times.</p>
+<template name="selectPortfolio">
+    <select id="selectPortfolio">
+        <option value="" {{isSelected}}></option>
+        {{#each portfolioId}}
+            <option value="{{_id}}" {{isSelected}}>{{name}}</option>
+        {{/each}}
+    </select>
 </template>
 
-<template name="info">
-  <h2>Learn Meteor!</h2>
-  <ul>
-    <li><a href="https://www.meteor.com/try" target="_blank">Do the Tutorial</a></li>
-    <li><a href="http://guide.meteor.com" target="_blank">Follow the Guide</a></li>
-    <li><a href="https://docs.meteor.com" target="_blank">Read the Docs</a></li>
-    <li><a href="https://forums.meteor.com" target="_blank">Discussions</a></li>
-  </ul>
+<template name="coinList">
+    {{#if portfolio.coins}}
+        <ul>
+        {{#each coin in portfolio.coins}}
+            <li>{{coin.name}} : {{coin.quantity}}</li>
+        {{/each}}
+        </ul>
+    {{else}}
+        <p>Nothing to display</p>
+    {{/if}}
+</template>
+
+<template name="coinForm">
+    
 </template>

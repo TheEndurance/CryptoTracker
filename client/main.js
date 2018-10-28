@@ -1,22 +1,35 @@
 import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
-
+import { Session } from 'meteor/session';
+import { Portfolios } from '../collections/portfolio.js';
+import { Tracker } from 'meteor/tracker';
 import './main.html';
 
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
+const SELECTED_PORTFOLIO_ID = 'selectedPortfolioId';
+
+Tracker.autorun(function () {
+    console.log("The selected portfolio ID is: " + Session.get(SELECTED_PORTFOLIO_ID));
 });
 
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
-  },
+
+Template.selectPortfolio.helpers({
+    portfolioId() {
+        return Portfolios.find({}, { fields: { name: 1, _id: 1 } });
+    },
+    isSelected() {
+        return Session.equals(SELECTED_PORTFOLIO_ID, this._id) ? 'selected' : '';
+    },
 });
 
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-  },
+Template.selectPortfolio.events({
+    'change #selectPortfolio'(evt) {
+        Session.set(SELECTED_PORTFOLIO_ID, evt.currentTarget.value);
+    }
 });
+
+Template.coinList.helpers({
+    portfolio(){
+        return Portfolios.findOne({
+            _id: Session.get(SELECTED_PORTFOLIO_ID)
+        });
+    }
+})
