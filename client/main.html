@@ -4,8 +4,9 @@
 
 <body>
     <h1>Blockfolio clone</h1>
-    {{> selectPortfolio}}
-    {{> coinList}}
+    {{> selectPortfolio}} 
+    {{> portfolio}} 
+    <hr>
     {{> coinForm}}
 </body>
 
@@ -13,23 +14,45 @@
     <select id="selectPortfolio">
         <option value="" {{isSelected}}></option>
         {{#each portfolioId}}
-            <option value="{{_id}}" {{isSelected}}>{{name}}</option>
+        <option value="{{_id}}" {{isSelected}}>{{name}}</option>
         {{/each}}
     </select>
 </template>
 
-<template name="coinList">
-    {{#if portfolio.coins}}
-        <ul>
-        {{#each coin in portfolio.coins}}
-            <li>{{coin.name}} : {{coin.quantity}}</li>
-        {{/each}}
-        </ul>
+<template name="portfolio">
+    {{#if portfolio.coins}} 
+        {{> coinList coins=portfolio.coins}} 
     {{else}}
-        <p>Nothing to display</p>
+    <p>Nothing to display</p>
     {{/if}}
 </template>
 
+<template name="coinList">
+    <table>
+        <thead>
+            <tr>
+                <th>Coin</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each coin in coins}}
+            <tr>
+                <td>{{coin.name}}</td>
+                <td>{{coin.quantity}}</td>
+                <td><button class="js-delete-coin" data-id="{{coin.name}}">Delete</button></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</template>
+
+
 <template name="coinForm">
-    
+    <form id="coinForm">
+        <label>Coin name: <input name="coinName" id="coinName" type="text" value=""></label><br>
+        <label>Quantity: <input name ="coinQuantity" id="coinQuantity" type="text" value=""></label><br>
+        <button type="submit">Submit</button>
+    </form>
 </template>
