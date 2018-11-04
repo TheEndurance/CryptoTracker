@@ -1,0 +1,20 @@
+<template name="coinForm">
+    <form id="coinForm">
+        <label>Coin: 
+            <select id="selectCoin">
+                <option value="" {{isSelected}}></option>
+                {{#each coins}}
+                <option value="{{_id}}">{{name}}</option>
+                {{/each}}
+            </select>
+        </label><br>
+        {{#if showCoinMeta}}
+            {{#with coinMeta}}
+            <label>Description: <span>{{description}}</span></label><br>
+            <label>Current price: <span>{{current_price}}</span></label><br>
+            {{/with}}
+        {{/if}}
+        <label>Quantity: <input name ="coinQuantity" id="coinQuantity" type="text" value=""></label><br>
+        <button type="submit">Add</button>
+    </form>
+</template>

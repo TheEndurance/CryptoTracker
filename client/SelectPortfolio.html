@@ -1,0 +1,8 @@
+<template name="selectPortfolio">
+    <select id="selectPortfolio">
+        <option value="" {{isSelected}}></option>
+        {{#each portfolioId}}
+        <option value="{{_id}}" {{isSelected}}>{{name}}</option>
+        {{/each}}
+    </select>
+</template>

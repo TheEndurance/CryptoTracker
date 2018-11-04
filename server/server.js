@@ -1,26 +1,36 @@
 import { Meteor } from 'meteor/meteor';
 import { Portfolios } from '../collections/portfolio.js';
-import {Mongo} from 'meteor/mongo';
+import { Coins } from '../collections/coins.js';
+
 Meteor.startup(() => {
-  Mongo.Collection.drop
+  if (Coins.find().count() === 0) {
+    const coins = [
+      {
+        name: 'ADA',
+        description: 'Cardano',
+        current_price: 0.0971,
+      },
+      {
+        name: 'BTC',
+        description: 'Bitcoin',
+        current_price: 8350.97,
+      },
+      {
+        name: 'LTC',
+        description: 'Litecoin',
+        current_price: 66.97,
+      }
+    ];
+    for (let coin of coins) {
+      Coins.insert(coin);
+    }
+    Coins.createIndex({ name: 1 }, { unique: true });
+  }
   if (Portfolios.find().count() === 0) {
     const portfolios = [
       {
         name: '1',
-        coins: [
-          {
-            name: 'ADA',
-            quantity: 9500.00
-          },
-          {
-            name: 'BTC',
-            quantity: 0.5
-          },
-          {
-            name: 'ETH',
-            quantity: 2.45678
-          },
-        ]
+        coins: []
       },
       {
         name: '2',

@@ -1,0 +1,22 @@
+<template name="coinList">
+    <table>
+        <thead>
+            <tr>
+                <th>Coin</th>
+                <th>Quantity</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each coin in coins}}
+            <tr>
+                <td>{{coin.name}}</td>
+                <td>{{coin.quantity}}</td>
+                <td><button class="js-delete-coin" data-id="{{coin.name}}">Delete</button></td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</template>
+    
+    
