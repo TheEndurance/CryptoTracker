@@ -1,10 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import { Portfolios} from '../collections/portfolio.js';
+import { LocalPortfolios, Portfolios } from '../collections/portfolio.js';
 
 import './SelectPortfolio.html';
 export const SELECTED_PORTFOLIO_ID = 'selectedPortfolioId';
 Session.setDefault(SELECTED_PORTFOLIO_ID, '');
+
+const newPortfolio = {
+    name: '',
+    coins: []
+};
 
 Template.selectPortfolio.helpers({
     portfolioId() {
@@ -17,6 +22,9 @@ Template.selectPortfolio.helpers({
 
 Template.selectPortfolio.events({
     'change #selectPortfolio'(evt) {
-        Session.set(SELECTED_PORTFOLIO_ID, evt.currentTarget.value);
+        const selectedId = evt.currentTarget.value;
+        let newId = LocalPortfolios.upsert(selectedId, Portfolios.findOne(selectedId) || newPortfolio).insertedId;
+        if (!newId) newId = selectedId;
+        Session.set(SELECTED_PORTFOLIO_ID, newId);
     }
 });
